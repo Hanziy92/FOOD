@@ -219,6 +219,13 @@ window.addEventListener('DOMContentLoaded', () => {
       '.menu .container',
       'menu__item'
    ).render(); 
+
+
+
+
+
+
+
       // Forms
 
 
@@ -245,19 +252,31 @@ window.addEventListener('DOMContentLoaded', () => {
          const r = new XMLHttpRequest();
          r.open('POST', 'server.php');
 
-         r.setRequestHeader('Content-type', 'multipart/form-data');
+         // r.setRequestHeader('Content-type', 'multipart/form-data');
+         r.setRequestHeader('Content-type', 'application/json');
          const formData = new FormData(form);
 
-         r.send(formData);
+         const object = {};
+
+         formData.forEach(function(value, key) {
+            object[key] = value;
+         });
+
+         const json = JSON.stringify(object);
+         r.send(json);
 
          r.addEventListener('load', () => {
             if (r.status === 200) {
+               console.log(r.response);
                statusMessage.textContent = message.success;
+               form.reset();
+               setTimeout(() => {
+                  statusMessage.remove();
+               }, 2000);
             } else {
                statusMessage.textContent = message.failure;
             }
          });
-
       });
    }
 });
