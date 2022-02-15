@@ -250,12 +250,7 @@ window.addEventListener('DOMContentLoaded', () => {
          `;
          
          form.insertAdjacentElement('afterend', statusMessage);
-
-         const r = new XMLHttpRequest();
-         r.open('POST', 'server.php');
-
-         // r.setRequestHeader('Content-type', 'multipart/form-data');
-         r.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      
          const formData = new FormData(form);
 
          const object = {};
@@ -264,20 +259,24 @@ window.addEventListener('DOMContentLoaded', () => {
             object[key] = value;
          });
 
-         const json = JSON.stringify(object);
-         r.send(json);
-
-         r.addEventListener('load', () => {
-            if (r.status === 200) {
-               console.log(r.response);
-               showThanksModal(message.success);
-               form.reset();
-               statusMessage.remove();
-               
-            } else {
-               showThanksModal(message.failure);
-            }
-         });
+         fetch('server.php', {
+            method: "POST",
+            headers: {
+               'Content-type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(object)
+         })
+         .then(data => data.text())
+         .then(data => {
+            console.log(data);
+            showThanksModal(message.success);
+            form.reset();
+            statusMessage.remove();
+         }).catch(() => {
+            showThanksModal(message.failure);
+         }).finally(() => {
+            form.reset();
+         })   
       });
    }
 
@@ -304,4 +303,6 @@ window.addEventListener('DOMContentLoaded', () => {
          closeModal();
       }, 4000);
    }
+
+   
 });
