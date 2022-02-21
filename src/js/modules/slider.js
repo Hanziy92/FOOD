@@ -193,4 +193,4 @@ function sliders() {
    // });
 }
 
-module.exports = sliders;
+export default sliders;

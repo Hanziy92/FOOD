@@ -1,4 +1,5 @@
 'use strict'
+import {getResorrce} from '../services/services';
 
 // CLASS ДЛЯ КАРТОЧОК
 
@@ -44,15 +45,7 @@ function cards() {
       }
    }
 
-   const getResorrce = async (url) => {
-      const res = await fetch(url);
-
-      if (!res.ok) {
-         throw new Error(`Could not fatch ${url}, status: ${res.status}`);
-      }
-      
-      return await res.json();
-   };
+   
 
    // getResorrce(' http://localhost:3000/menu')
    // .then(data => {
@@ -84,4 +77,4 @@ function cards() {
    }
 }
 
-module.exports = cards;
+export default cards;
